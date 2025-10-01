@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Product categories</h1>
+            <p class="lead fw-normal text-white-50 mb-0">All store categories</p>
+        </div>
+    </div>
+</header>
+
+
+<div class="container">
+    <div class="row">
+        <center>
+            <div class="col-8">
+                <p align=" justify"> </p>
+             {% for cat in category %}
+                  <a href= "{% url 'category' cat.name %}"> <h3>{{cat.name}}</h3> </a>
+             {% endfor %}
+            </div>
+        </center>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder"> Final approval</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Please check your order.</p>
+        </div>
+    </div>
+</header>
+<br><br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header text-center">
+                    Your orders:
+                </div>
+                <div class="card-body text-center">
+                    {% for product in cart_products %}
+                    <strong>{{ product.name }}</strong>
+                    <small>
+                        <br>
+                        price:
+                        {% if product.is_sale %}
+                        {{ product.sale.price | intcomma }}
+                        {% else %}
+                        {{ product.price | intcomma }}
+                    </small><br>
+                    {% endif %}
+
+
+                    <small class="text-muted">
+                        Number:
+                        {% for key, value in quantities.items %}
+                        {% if key == product.id|slugify %}
+                        {{ value }}
+                        {% endif %}
+                        {% endfor %}
+                    </small>
+                    <br><br>
+                    <hr>
+                    {% endfor %}
+
+                    <strong> all order {{ total | intcomma }}</strong>
+                    <br>
+
+                </div>
+            </div>
+
+
+            <div class="card">
+                <div class="card-header text-center">
+                    Shipping details:
+                </div>
+                <div class="card-body text-center">
+                    <!-- {{ shipping_info.shipping_full_name }} -->
+                    <div class="card-body text-center">
+                        <form method="POST" action="{% url 'process_order' %}">
+                            {% csrf_token %}
+                            نام و نام خانوادگی: {{ shipping_info.shipping_full_name }}<br>
+                            ایمیل: {{ shipping_info.email }}<br>
+                            آدرس ۱: {{ shipping_info.shipping_address1 }}<br>
+                            آدرس ۲: {{ shipping_info.shipping_address2 }}<br>
+                            شهر: {{ shipping_info.shipping_city }}<br>
+                            کد پستی: {{ shipping_info.shipping_zipcode }}<br>
+                            کشور: {{ shipping_info.shipping_country }}<br>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center; height: 70px;">
+            <button type="submit" class="btn btn-sm btn-outline-secondary">Continue to place an order</button>
+        </div>
+        </form>
+    </div>
+</div>
+<br>
+{% endblock %}

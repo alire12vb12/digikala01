@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder"> Shop in style </h1>
+            <p class="lead fw-normal text-white-50 mb-0">Please check your order.</p>
+        </div>
+    </div>
+</header>
+<br><br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header text-center">
+                    Your orders:
+                </div>
+                <div class="card-body text-center">
+                    {% for product in cart_products %}
+                    <strong>{{ product.name }}</strong>
+                    <small>
+                        <br>
+                        price:
+                        {% if product.is_sale %}
+                        {{ product.sale.price | intcomma }}
+                        {% else %}
+                        {{ product.price | intcomma }}
+                    </small><br>
+                    {% endif %}
+
+
+                    <small class="text-muted">
+                        Number:
+                        {% for key, value in quantities.items %}
+                        {% if key == product.id|slugify %}
+                        {{ value }}
+                        {% endif %}
+                        {% endfor %}
+                    </small>
+                    <br><br>
+                    <hr>
+                    {% endfor %}
+
+                    <strong> all order {{ total | intcomma }}</strong>
+                    <br>
+                    <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">edit order</a>
+                </div>
+            </div>
+
+
+            <div class="card">
+                <div class="card-header text-center">
+                    Shipping details:
+                </div>
+                <div class="card-body text-center">
+                    <form action="{% url 'confirm_order' %}" method="POST">
+                        {% csrf_token %}
+                        {{ shipping_form.as_p }}
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center; height: 70px;">
+            <button type="submit" class="btn btn-sm btn-outline-secondary">continue</button>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+{% endblock %}

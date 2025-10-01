@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<br>
+<br>
+
+<div class="container">
+    <div class="row">
+
+
+        {% if other %}
+        <h3>Current orders</h3>
+        <table class="table">
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col">Order Number</th>
+                    <th scope="col">Name </th>
+                    <th scope="col">Order Date </th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for order in other %}
+                <tr>
+                    <th scope="row"><a href="{% url 'order_details' order.id %}">order number{{order.id}}</a></th>
+                    <td>{{order.full_name}}</td>
+                    <td>{{order.date_ordered}}</td>
+                    <td>{{order.get_status_display}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        The order is not in progress.
+        {% endif %}
+
+
+
+        {% if delivered %}
+        <h3>Orders delivered</h3>
+        <table class="table">
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col">Order Number</th>
+                    <th scope="col">Name </th>
+                    <th scope="col">Delivery date</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for order in delivered %}
+                <tr>
+                    <th scope="row"><a href="{% url 'order_details' order.id %}">order number{{order.id}}</a></th>
+                    <td>{{order.full_name}}</td>
+                    <td>{{order.last_update}}</td>
+                    <td>{{order.get_status_display}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+       There is no custom
+        {% endif %}
+
+        <div class="col-8">
+            orders
+        </div>
+        </center>
+    </div>
+</div>
+{% endblock %}
